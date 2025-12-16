@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 app.post("/auth/login", userController.login);
-app.post("/register", userController.register);
+//app.post("/register", userController.register);
 
 app.post(
   "/users",

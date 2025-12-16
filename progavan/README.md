@@ -14,7 +14,6 @@ Consente agli utenti registrati di creare lotti di pesce certificati (NFT), avan
 | POST   | /auth/login                 | email, password                     | Login e generazione token JWT      |
 | POST   | /users                     | email, password, role, ethAddress   | Creazione utente (solo admin)      |
 | GET    | /users                     | Nessuno                            | Lista utenti (autenticato)         |
-| PUT    | /users/:id                 | id (path), role                     | Aggiornamento ruolo utente         |
 | DELETE | /users/:id                 | id (path)                         | Eliminazione utente                 |
 | POST   | /lots                      | species, quantity, lat, lon, vessel | Creazione lotto (FISHER_ROLE)      |
 | POST   | /lots/:tokenId/advance     | tokenId (path), actorEth (opzionale) | Avanzamento stato lotto            |

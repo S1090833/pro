@@ -13,7 +13,7 @@ export function requireRole(expectedRole: string) {
         return res.status(401).json({ error: "Utente non autenticato" });
       }
 
-      // ✅ DEFAULT_ADMIN_ROLE è 0x00, NON keccak256
+      // DEFAULT_ADMIN_ROLE è 0x00, NON keccak256
       const roleHash =
         expectedRole === "DEFAULT_ADMIN_ROLE"
           ? DEFAULT_ADMIN_ROLE

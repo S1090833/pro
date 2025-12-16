@@ -20,7 +20,6 @@ contract FishLotNFT is ERC721URIStorage {
 
     struct History {
         State step;
-      //  uint256 timestamp;
         address actor;
     }
 
@@ -29,7 +28,6 @@ contract FishLotNFT is ERC721URIStorage {
         string species;
         uint256 quantity;
         string area;
-       // uint256 timestampCapture;
         string vessel;
         State state;
         bool completed;
@@ -56,9 +54,9 @@ contract FishLotNFT is ERC721URIStorage {
         _;
     }
 
-    // ==========================
-    //        MINT LOT
-    // ==========================
+    
+    // MINT LOT
+    
     function mintLot(
         address to,
         string memory species,
@@ -77,7 +75,6 @@ contract FishLotNFT is ERC721URIStorage {
             species: species,
             quantity: quantity,
             area: area,
-         //   timestampCapture: timestampCapture,
             vessel: vessel,
             state: State.FISHED,
             completed: false,
@@ -92,9 +89,9 @@ contract FishLotNFT is ERC721URIStorage {
         return newId;
     }
 
-    // ==========================
-    //     ADVANCE STATE
-    // ==========================
+
+    // ADVANCE STATE
+
     function advanceState(uint256 tokenId) external {
         require(_exists(tokenId), "Token non esistente");
 
@@ -143,9 +140,9 @@ contract FishLotNFT is ERC721URIStorage {
         emit StateAdvanced(tokenId, next, msg.sender);
     }
 
-    // ==========================
-    //        READ DATA
-    // ==========================
+
+    // READ DATA
+
     function getHistory(uint256 tokenId) external view returns (History[] memory) {
         return histories[tokenId];
     }

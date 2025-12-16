@@ -16,7 +16,7 @@ export const lotDao = {
     approved?: boolean;
     completed?: boolean;
   }) {
-    // requesterId è ignorato perché non presente nel modello Lot, se serve aggiungi al modello e DB
+    
     return Lot.create({
       token_id: dbObj.tokenId,
       owner_eth_address: dbObj.owner,
@@ -27,7 +27,6 @@ export const lotDao = {
       state: dbObj.state || "FISHED",
       approved: dbObj.approved || false,
       completed: dbObj.completed || false,
-      // completed_at: null by default
     });
   },
 

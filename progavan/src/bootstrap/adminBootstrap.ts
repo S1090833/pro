@@ -33,7 +33,7 @@ export async function syncAdminUser() {
   });
 
   if (existing) {
-    console.log("✅ Admin già presente nel DB");
+    console.log("Admin già presente nel DB");
     return;
   }
 
@@ -50,5 +50,5 @@ export async function syncAdminUser() {
     eth_address: adminAddress,
   });
 
-  console.log("✅ Admin sincronizzato DB ↔ Blockchain");
+  console.log("Admin sincronizzato DB ↔ Blockchain");
 }

@@ -774,7 +774,7 @@ Per testare il progetto correttamente, è importante seguire alcuni passaggi chi
 1. **Scarica il progetto**: Clona il repository tramite URL Git oppure scarica il file ZIP ed estrailo.
 2. **Importa le richieste API**: Per facilitare i test delle API, è disponibile una collection Postman con tutte le chiamate preconfigurate.
 
-- Scarica il file `fishlot_postman_collection.json` dalla cartella `/progavan` 
+- Scarica il file `fishlot_postman_collection.json` dalla cartella `/progavan/test` 
 
 - Importa la collection in Postman tramite **Import > File > seleziona il file**.
 

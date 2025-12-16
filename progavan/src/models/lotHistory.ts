@@ -60,6 +60,5 @@ LotHistory.init(
   }
 );
 
-// Optionally: define association here if you want
 Lot.hasMany(LotHistory, { foreignKey: "lot_id" });
 LotHistory.belongsTo(Lot, { foreignKey: "lot_id" });

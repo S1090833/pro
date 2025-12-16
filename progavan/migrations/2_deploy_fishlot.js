@@ -6,6 +6,6 @@ module.exports = async function (deployer) {
 
   await deployer.deploy(
     FishLotNFT,
-    rolesManager.address   // <-- IMPORTANTISSIMO
+    rolesManager.address   
   );
 };

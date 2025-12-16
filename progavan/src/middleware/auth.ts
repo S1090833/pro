@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 export function auth(req: Request, res: Response, next: NextFunction) {
   const header = req.headers.authorization;
-  console.log("Authorization header:", header); // <-- aggiungi questo
+  console.log("Authorization header:", header); 
 
   if (!header) return res.status(401).json({ error: "No token" });
 

@@ -38,17 +38,28 @@ export const userController = {
 
   async get(req: Request, res: Response) {
     const user = await userDao.getById(Number(req.params.id));
-    if (!user) return res.status(404).json({ error: "User not found" });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
     res.json(user);
   },
 
-  async update(req: Request, res: Response) {
-    const updated = await userDao.updateUser(Number(req.params.id), req.body.role);
-    res.json(updated);
-  },
-
   async delete(req: Request, res: Response) {
-    const ok = await userDao.deleteUser(Number(req.params.id));
+    const id = Number(req.params.id);
+
+    const user = await userDao.getById(id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // 🔒 BLOCCO eliminazione admin
+    if (user.role === "DEFAULT_ADMIN_ROLE") {
+      return res.status(403).json({
+        error: "Il DEFAULT_ADMIN_ROLE non può essere eliminato"
+      });
+    }
+
+    const ok = await userDao.deleteUser(id);
     res.json({ success: ok });
   }
 };

@@ -52,3 +52,4 @@ sequenceDiagram
   LotController-->>App: res.status(201).json(result)
 
   App-->>Client: 201 Created + dati lotto
+```

@@ -16,7 +16,7 @@ Consente agli utenti registrati di creare lotti di pesce certificati (NFT), avan
 | GET    | /users                     | Nessuno                            | Lista utenti (autenticato)         |
 | DELETE | /users/:id                 | id (path)                         | Eliminazione utente                 |
 | POST   | /lots                      | species, quantity, lat, lon, vessel | Creazione lotto (FISHER_ROLE)      |
-| POST   | /lots/:tokenId/advance     | tokenId (path), actorEth (opzionale) | Avanzamento stato lotto            |
+| POST   | /lots/:tokenId/advance     | tokenId (path),                     | Avanzamento stato lotto            |
 | GET    | /lots/:tokenId             | tokenId (path)                    | Dettaglio lotto                    |
 | GET    | /lots/:tokenId/history     | tokenId (path)                    | Cronologia stati lotto (on-chain) |
 

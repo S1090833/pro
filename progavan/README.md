@@ -419,14 +419,13 @@ Authorization: Bearer <token_jwt>
 ```
 
 ### Meccanismo
--Middleware auth verifica il token JWT e decodifica i dati utente
-
+- Middleware auth verifica il token JWT e decodifica i dati utente
 - Controller riceve tokenId e actorEth (da body o JWT)
 - Service:
--- Verifica la validità dell’indirizzo Ethereum actorEth
--- Stima il gas necessario e invia la transazione on-chain advanceState(tokenId) usando l’actorEth come sender
--- Recupera lo stato aggiornato on-chain e aggiorna il record nel database
--- Aggiunge una voce di storia (history) associata allo stato avanzato
+ - Verifica la validità dell’indirizzo Ethereum actorEth
+ - Stima il gas necessario e invia la transazione on-chain advanceState(tokenId) usando l’actorEth come sender
+ - Recupera lo stato aggiornato on-chain e aggiorna il record nel database
+ - Aggiunge una voce di storia (history) associata allo stato avanzato
 - Restituisce i dati aggiornati e la transazione
 
 ```mermaid
@@ -515,5 +514,129 @@ sequenceDiagram
 ```json
 {
   "error": "Errore nella transazione blockchain"
+}
+```
+
+---
+
+## GET: `/lots/:tokenId/history`
+
+Questa rotta restituisce la cronologia degli stati (history) di un lotto specifico, recuperata on-chain.
+
+---
+
+### Richiesta
+
+```http
+GET /lots/42/history
+Authorization: Bearer <token_jwt>
+```
+
+### Meccanismo
+
+- Middleware auth verifica il token JWT e decodifica i dati utente
+
+- Controller riceve il tokenId dalla URL
+
+- Service richiama il contratto blockchain per ottenere la cronologia degli stati (getHistory(tokenId))
+
+- Restituisce la cronologia degli eventi (stati, timestamp, attori)
+
+```mermaid
+sequenceDiagram
+  autonumber
+
+  participant Client
+  participant App (Express)
+  participant MiddlewareAuth
+  participant LotController
+  participant LotService
+  participant LotContract
+
+  Client->>App: GET /lots/:tokenId/history + JWT
+
+  App->>MiddlewareAuth: authenticate JWT
+  MiddlewareAuth-->>App: user data
+
+  App->>LotController: getHistory(req)
+
+  LotController->>LotService: getHistoryOnChain(tokenId)
+
+  LotService->>LotContract: getHistory(tokenId)
+
+  LotContract-->>LotService: history[]
+
+  LotService-->>LotController: history[]
+
+  LotController-->>App: res.json(history)
+
+  App-->>Client: 200 OK + JSON con lista history
+
+```
+
+### Risposta in caso di successo
+
+```json
+{
+  {
+  "tokenId": 42,
+  "lot": {
+    "id": 42,
+    "species": "Tuna",
+    "quantity": 150,
+    "area": "27.8.b",
+    "vessel": "FishingBoat01",
+    "stateIndex": 2,
+    "state": "DISTRIBUTING",
+    "completed": false
+  },
+  "history": [
+    {
+      "stepIndex": 0,
+      "state": "FISHED",
+      "timestamp": 1690000000,
+      "actor": "0xabc123..."
+    },
+    {
+      "stepIndex": 1,
+      "state": "PROCESSING",
+      "timestamp": 1690005000,
+      "actor": "0xdef456..."
+    },
+    {
+      "stepIndex": 2,
+      "state": "DISTRIBUTING",
+      "timestamp": 1690010000,
+      "actor": "0x123789..."
+    }
+  ]
+}
+
+
+}
+```
+
+---
+
+### Risposte in caso di errore
+
+#### 400 – Parametro tokenId non valido
+```json
+{
+  "error": "tokenId non valido"
+}
+```
+
+#### 404 – Lotto non trovato
+```json
+{
+  "error": "Not found"
+}
+```
+
+#### 500 – Errore interno server
+```json
+{
+  "error": "Errore del server"
 }
 ```

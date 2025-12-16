@@ -107,13 +107,15 @@ L’istanza di Web3 e le connessioni ai contratti smart (`lotContract`, `rolesMa
 
    ```bash
    ganache-cli
-  ```
+   ```
 2. **Compilare e migrare i contratti**
   Con Truffle, si compilano i contratti e si deployano su Ganache.
+   
    ```bash
    truffle compile
    truffle migrate --network development
-  ```
+   ```
+
 3. **Configurazione del backend**
 
 - Impostare in .env la variabile RPC_URL puntando a Ganache (http://localhost:8545).
@@ -532,7 +534,7 @@ Questa rotta permette a un utente con il ruolo on-chain corrispondente di avanza
 
 ---
 
-### 📥 Richiesta
+### Richiesta
 
 ```http
 POST /lots/42/advance
@@ -762,3 +764,31 @@ sequenceDiagram
   "error": "Errore del server"
 }
 ```
+
+---
+
+## Testing
+
+Per testare il progetto correttamente, è importante seguire alcuni passaggi chiave per configurare l’ambiente di sviluppo e avviare i test in modo efficace. Ecco una guida nei seguenti passaggi:
+
+1. **Scarica il progetto**: Clona il repository tramite URL Git oppure scarica il file ZIP ed estrailo.
+2. **Importa le richieste API**: Per facilitare i test delle API, è disponibile una collection Postman con tutte le chiamate preconfigurate.
+
+- Scarica il file `fishlot_postman_collection.json` dalla cartella `/progavan` 
+
+- Importa la collection in Postman tramite **Import > File > seleziona il file**.
+
+- La collection contiene tutte le rotte principali con esempi di body, header e parametri.
+
+- Assicurati che la variabile `base_url` sia impostata a `http://localhost:3000` o all'URL corretto del tuo server.
+
+
+3. **Avvia i servizi**: Apri un terminale nella cartella `/progavan` e lancia il comando:
+  ```bash
+    docker-compose up ganache truffle 
+  ```
+  Aspettare i deploy dei contratti fino a quando non uscirà la scritta truffle **truffle exited with code 0**
+  4. **Configura l’ambiente**: Compila il file `.env` con i dati richiesti, prendere i contract addres e inserirli nell' `.env`.
+  ![deploy1](deploy1.png)
+  ![deploy2](deploy2.png)
+

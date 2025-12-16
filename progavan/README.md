@@ -783,12 +783,35 @@ Per testare il progetto correttamente, è importante seguire alcuni passaggi chi
 - Assicurati che la variabile `base_url` sia impostata a `http://localhost:3000` o all'URL corretto del tuo server.
 
 
-3. **Avvia i servizi**: Apri un terminale nella cartella `/progavan` e lancia il comando:
+3. **Avvia i servizi**
+Apri un terminale nella cartella `/progavan` e lancia il comando:
   ```bash
     docker-compose up ganache truffle 
   ```
-  Aspettare i deploy dei contratti fino a quando non uscirà la scritta truffle **truffle exited with code 0**
-  4. **Configura l’ambiente**: Compila il file `.env` con i dati richiesti, prendere i contract addres e inserirli nell' `.env`.
+  Aspettare i deploy dei contratti fino a quando non uscirà la scritta truffle **truffle exited with code 0**.
+
+4. **Configura ganache truffle**
+Compila il file `.env` con i dati richiesti, prendere i contract addres e inserirli nell' `.env`.
   ![deploy1](deploy1.png)
   ![deploy2](deploy2.png)
 
+5. **Configura api e db**
+ Apri un terminale nella cartella `/progavan` e lancia il comando:
+  ```bash
+     docker-compose up --build api 
+  ```
+Per la creazione dello USER_ADMIN 
+
+6. **svolgimento creazione utenti e lotti**
+Attraverso le chiamate API, iniziare con il login admin
+ ```json
+     {
+      "email": "admin@system.local",
+      "password": "admin"
+     }  
+  ```
+  copiare il **jwt_token** nel variabili e creare gli utenti.
+  Nel campo **ethAddress** inserire un address che sono stati forniti alla creazione di ganache
+  ![ins_add](ins_add.png)
+  ![address](address.png)
+Così per la creazione di tutti gli utenti.

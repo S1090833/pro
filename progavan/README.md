@@ -1,55 +1,115 @@
+## Funzionamento del Progetto
+
+Di seguito viene descritto il funzionamento delle principali rotte API del progetto **VoidTracks**, con esempi di richieste, risposte e meccanismi sottostanti.
+
+### POST: /auth/register
+
+**Richiesta**
+
+Il corpo della richiesta deve seguire il modello JSON:
+```json
+{
+  "username": "nuovoUtente",
+  "password": "nuovaPassword"
+}
+```
+
+**Meccanismo**
+
+Il meccanismo è il seguente:
+- Valida i dati ricevuti (username e password).
+- Verifica che l’username non sia già registrato.
+- Applica un hash sicuro alla password tramite bcrypt.
+- Crea un nuovo utente con ruolo user e saldo iniziale di token (10).
+- Genera un token JWT contenente id, username, ruolo e token residui.
+- Restituisce il token e i dati utente.
+
+**Diagramma di sequenza**
+
+Il meccanismo che si innesca all'atto della chiamata è descritto dal seguente diagramma:
+
 ```mermaid
 sequenceDiagram
   autonumber
   participant Client
   participant App
-  participant AuthMiddleware
-  participant RoleMiddleware
-  participant LotController
-  participant LotService
-  participant RolesManagerContract
-  participant FishLotNFTContract
-  participant LotDao
+  participant Middleware
+  participant Controller
   participant DB
+  participant JWTService
 
-  Client->>App: POST /lots (body con dati lotto)
-  
-  App->>AuthMiddleware: verifica JWT token
-  AuthMiddleware-->>App: user con eth_address
+  Client->>App: POST /auth/register (username, password)
 
-  App->>RoleMiddleware: verifica ruolo FISHER_ROLE on-chain
-  RoleMiddleware->>RolesManagerContract: hasRolePublic(FISHER_ROLE, eth_address)
-  RolesManagerContract-->>RoleMiddleware: true/false
-  RoleMiddleware-->>App: next() o 403
+  App->>Middleware: validateAuthInput
+  Middleware-->>App: next()
 
-  App->>LotController: create(req.body, req.user.eth_address)
+  App->>Middleware: checkUserExists
+  Middleware->>DB: User.findOne({ where: { username } })
+  DB-->>Middleware: null
+  Middleware-->>App: next()
 
-  LotController->>LotService: createLot(payload + eth_address)
+  App->>Controller: register(req)
+  Controller->>DB: User.create({ username, password_hash, tokens, role })
+  DB-->>Controller: newUser
 
-  LotService->>RolesManagerContract: hasRolePublic(FISHER_ROLE, eth_address)
-  RolesManagerContract-->>LotService: true/false
+  Controller->>JWTService: sign({ id, username, role, tokens })
+  JWTService-->>Controller: token
 
-  LotService->>LotService: getFAOArea(lat, lon)
+  Controller-->>App: token e user
 
-  LotService->>FishLotNFTContract: estimateGas mintLot(...)
-  FishLotNFTContract-->>LotService: gasEstimate
+  App->>Client: status: res.status(201)
+  App->>Client: res: res.json({ token, user })
+```
 
-  LotService->>FishLotNFTContract: send mintLot(...) with gasEstimate
-  FishLotNFTContract-->>LotService: tx receipt con tokenId
+**Risposta in caso di successo**
 
-  LotService->>LotDao: create({tokenId, owner, specie, ...})
-  LotDao->>DB: INSERT INTO lots ...
-  DB-->>LotDao: lotto creato
+La risposta restituisce il token e i dati utente.
 
-  LotService->>LotDao: addHistory(lotId, "FISHER", eth_address)
-  LotDao->>DB: INSERT INTO lot_history ...
-  DB-->>LotDao: ok
+```json
+{
+  "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": 10,
+    "username": "nuovoUtente",
+    "role": "user",
+    "tokens": 10
+  }
+}
+```
 
-  LotDao-->>LotService: result
+**Risposta in caso di errore**
 
-  LotService-->>LotController: { tx, db, tokenId }
+Se username o password sono assenti o non validi, viene restituito un errore con codice **400** e una lista di messaggi strutturati:
 
-  LotController-->>App: res.status(201).json(result)
+```json
+{
+  "errors": [
+    {
+      "msg": "Bad Request: Username obbligatorio, almeno 3 caratteri",
+      "param": "username",
+      "location": "body"
+    },
+    {
+      "msg": "Bad Request: Password obbligatoria, almeno 6 caratteri",
+      "param": "password",
+      "location": "body"
+    }
+  ]
+}
+```
+Se solo uno dei due campi è errato, la risposta conterrà solo l’errore corrispondente.
 
-  App-->>Client: 201 Created + dati lotto
+Se l'username fornito è già presente nel database, viene restituito un errore con codice **409** e un messaggio descrittivo:
+
+```json
+{
+  "error": "Conflict: Username già in uso"
+}
+```
+
+Per altri errori lato server viene restituito un errore con codice **500** e un messaggio generico:
+```json
+{
+  "error": "Errore del server"
+}
 ```

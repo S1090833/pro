@@ -24,6 +24,103 @@ Consente agli utenti registrati di creare lotti di pesce certificati (NFT), avan
 
 ---
 
+# Pattern Architetturali e Parte On-Chain
+
+Questo progetto combina architetture software consolidate con tecnologie blockchain per garantire sicurezza, modularità e tracciabilità.
+
+---
+
+## Pattern Architetturali Utilizzati
+
+### 1. Model-Service-Controller (MSC)
+
+Il progetto utilizza il pattern **MSC** che suddivide l’applicazione in tre livelli principali:
+
+- **Model (DAO)**: si occupa dell’interazione con il database, gestendo query SQL e manipolazione dati.
+- **Service**: contiene la logica di business, orchestrando le operazioni complesse, validazioni e interazioni con la blockchain.
+- **Controller**: riceve e risponde alle richieste HTTP, coordinando i service per fornire la risposta al client.
+
+**Vantaggi:**
+- Chiarezza nella separazione delle responsabilità.
+- Facilità di testing e manutenzione.
+- Modularità e riuso del codice.
+
+---
+
+### 2. Singleton
+
+L’istanza di Web3 e le connessioni ai contratti smart (`lotContract`, `rolesManagerContract`) sono implementate secondo il pattern **Singleton**.
+
+- **Motivazioni**:
+  - Assicurare una singola connessione Web3 condivisa in tutto il backend.
+  - Ridurre l’overhead di inizializzazioni multiple.
+  - Centralizzare la gestione degli smart contract e delle loro ABI.
+
+---
+
+## Parte On-Chain: Smart Contracts e Interazione
+
+### Smart Contracts principali
+
+- **FishLotNFT.sol**
+  - Contratto ERC721 che rappresenta i lotti di pesce come NFT unici.
+  - Include funzioni per minting (creazione) di lotti e avanzamento del loro stato nella filiera.
+  - Registra la cronologia degli stati on-chain tramite eventi e strutture dati.
+
+- **RolesManager.sol**
+  - Basato su OpenZeppelin `AccessControl`.
+  - Gestisce ruoli on-chain (`FISHER_ROLE`, `PROCESSOR_ROLE`, `DISTRIBUTOR_ROLE`, `RETAILER_ROLE`).
+  - Permette di assegnare e revocare ruoli, controllando i permessi per le azioni critiche sugli NFT.
+
+---
+
+### Workflow On-Chain
+
+1. **Deploy dei contratti**
+   - I contratti vengono distribuiti su una blockchain di sviluppo (ad esempio Ganache o testnet).
+2. **Assegnazione dei ruoli**
+   - I ruoli sono assegnati agli indirizzi Ethereum degli utenti tramite il contratto `RolesManager`.
+3. **Minting Lotto**
+   - Solo un indirizzo con `FISHER_ROLE` può creare un nuovo lotto NFT chiamando `mintLot`.
+4. **Avanzamento Stato**
+   - Solo gli utenti con ruoli specifici possono avanzare lo stato del lotto (PROCESSOR_ROLE, DISTRIBUTOR_ROLE, RETAILER_ROLE).
+5. **Tracciamento Storico**
+   - Ogni avanzamento genera eventi on-chain e aggiorna la storia dello stato per audit e trasparenza.
+
+---
+
+### Tooling e Ambiente di sviluppo
+
+| Tool      | Scopo                              | Note                                    |
+|-----------|-----------------------------------|-----------------------------------------|
+| **Ganache** | Blockchain locale per sviluppo e test | Emula una blockchain Ethereum privata e veloce |
+| **Truffle** | Suite per compilazione e deploy smart contract | Gestisce build, migrazione e test       |
+| **Web3.js** | Libreria per interagire con Ethereum da Node.js | Usata nel backend per chiamare i contratti |
+
+---
+
+### Come usare Ganache e Truffle
+
+1. **Avviare Ganache**
+
+   Ganache crea una blockchain privata locale, utile per sviluppo e test.
+
+   ```bash
+   ganache-cli
+  ```
+2. **Compilare e migrare i contratti**
+  Con Truffle, si compilano i contratti e si deployano su Ganache.
+   ```bash
+   truffle compile
+   truffle migrate --network development
+  ```
+3. **Configurazione del backend**
+
+- Impostare in .env la variabile RPC_URL puntando a Ganache (http://localhost:8545).
+
+- Definire gli indirizzi deployati per LOT_CONTRACT_ADDRESS e CONTRACT_ADDRESS (RolesManager).
+
+- Il backend utilizza web3.js per interagire con i contratti tramite queste variabili.
 
 ## Funzionamento del Progetto
 

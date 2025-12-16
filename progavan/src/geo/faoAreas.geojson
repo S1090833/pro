@@ -1,0 +1,131 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "fao_code": "37.1",
+        "name": "Western Mediterranean"
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [-6.0, 36.0],
+              [2.0, 36.0],
+              [2.0, 44.0],
+              [-6.0, 44.0],
+              [-6.0, 36.0]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "fao_code": "37.1.3",
+        "name": "Sardinia (includes Ligurian & Tyrrhenian Sea)"
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [7.5, 36.5],
+              [11.0, 36.5],
+              [11.0, 40.0],
+              [7.5, 40.0],
+              [7.5, 36.5]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "fao_code": "37.2",
+        "name": "Central Mediterranean"
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [6.0, 36.0],
+              [19.0, 36.0],
+              [19.0, 41.0],
+              [6.0, 41.0],
+              [6.0, 36.0]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "fao_code": "37.2.1",
+        "name": "Adriatic Sea"
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [12.0, 40.0],
+              [19.0, 40.0],
+              [19.0, 46.0],
+              [12.0, 46.0],
+              [12.0, 40.0]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "fao_code": "37.2.2",
+        "name": "Ionian Sea"
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [15.0, 35.0],
+              [19.0, 35.0],
+              [19.0, 39.0],
+              [15.0, 39.0],
+              [15.0, 35.0]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "fao_code": "37.3",
+        "name": "Eastern Mediterranean"
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [19.0, 33.0],
+              [36.0, 33.0],
+              [36.0, 42.0],
+              [19.0, 42.0],
+              [19.0, 33.0]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+      - ./src/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-net
+
+  ganache:
+    image: trufflesuite/ganache
+    container_name: ganache
+    ports:
+      - "8545:8545"
+    command:
+      - --wallet.totalAccounts
+      - "10"
+      - --wallet.defaultBalance
+      - "1000"
+      - --chain.chainId
+      - "1337"
+      - --chain.networkId
+      - "1337"
+      - --server.host
+      - "0.0.0.0"
+    networks:
+      - app-net
+
+  truffle:
+    image: node:18
+    container_name: truffle
+    working_dir: /app
+    volumes:
+      - .:/app
+    depends_on:
+      - ganache
+    command: >
+      sh -c "
+      npm install &&
+      npx wait-port ganache:8545 --timeout=20 &&
+      npx truffle migrate --network development
+      "
+    networks:
+      - app-net
+
+  api:
+    build: .
+    container_name: api
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      WEB3_PROVIDER: http://ganache:8545
+    networks:
+      - app-net
+
+volumes:
+  dbdata:
+
+networks:
+  app-net:
+    driver: bridge

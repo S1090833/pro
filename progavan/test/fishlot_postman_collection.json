@@ -163,7 +163,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"species\": \"Salmon\",\n  \"quantity\": 100,\n  \"lat\": 45.4642,\n  \"lon\": 9.19,\n  \"vessel\": \"Fishing Boat 1\"\n}"
+          "raw": "{\n  \"species\": \"Salmon\",\n  \"quantity\": 100,\n  \"lat\": ,\n  \"lon\": ,\n  \"vessel\": \"Fishing Boat 1\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/lots",
@@ -283,36 +283,6 @@
             "value": "Bearer {{jwt_token}}"
           }
         ],
-        "url": {
-          "raw": "{{base_url}}/users/1",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "users",
-            "1"
-          ]
-        }
-      }
-    },
-    {
-      "name": "Update User Role",
-      "request": {
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Authorization",
-            "value": "Bearer {{jwt_token}}"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"role\": \"PROCESSOR_ROLE\"\n}"
-        },
         "url": {
           "raw": "{{base_url}}/users/1",
           "host": [

@@ -14,7 +14,6 @@ Consente agli utenti registrati di creare lotti di pesce certificati (NFT), avan
 | POST   | /auth/login                 | email, password                     | Login e generazione token JWT      |
 | POST   | /users                     | email, password, role, ethAddress   | Creazione utente (solo admin)      |
 | GET    | /users                     | Nessuno                            | Lista utenti (autenticato)         |
-| GET    | /users/:id                 | id (path)                         | Dettaglio utente                   |
 | PUT    | /users/:id                 | id (path), role                     | Aggiornamento ruolo utente         |
 | DELETE | /users/:id                 | id (path)                         | Eliminazione utente                 |
 | POST   | /lots                      | species, quantity, lat, lon, vessel | Creazione lotto (FISHER_ROLE)      |
@@ -815,3 +814,8 @@ Attraverso le chiamate API, iniziare con il login admin
   ![ins_add](ins_add.png)
   ![address](address.png)
 Così per la creazione di tutti gli utenti.
+
+7. **creazione lotto**
+Quando si crea il lotto per i campi lat, lot ho creato un file .geojson che mi restituisce la zona FAO 
+![fao](fao.png)
+In questo caso nel body della creazione del lotto lat sarà 36.0 e lon 6.0

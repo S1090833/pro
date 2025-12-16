@@ -1,4 +1,29 @@
 # FishLot Traceability API
+# Descrizione del Progetto
+
+**FishLot** è una piattaforma blockchain-based per la tracciabilità della filiera ittica.  
+Consente agli utenti registrati di creare lotti di pesce certificati (NFT), avanzare gli stati di lavorazione e monitorare la storia del prodotto attraverso un sistema decentralizzato che integra smart contract, un database tradizionale e API REST sicure con autenticazione JWT.
+
+---
+
+# Tabella delle Rotte API
+
+| Metodo | Rotta                       | Parametri                             | Descrizione                          |
+|--------|-----------------------------|-------------------------------------|------------------------------------|
+| POST   | /auth/register              | email, password, role, ethAddress   | Registrazione utente e assegnazione ruolo on-chain |
+| POST   | /auth/login                 | email, password                     | Login e generazione token JWT      |
+| POST   | /users                     | email, password, role, ethAddress   | Creazione utente (solo admin)      |
+| GET    | /users                     | Nessuno                            | Lista utenti (autenticato)         |
+| GET    | /users/:id                 | id (path)                         | Dettaglio utente                   |
+| PUT    | /users/:id                 | id (path), role                     | Aggiornamento ruolo utente         |
+| DELETE | /users/:id                 | id (path)                         | Eliminazione utente                 |
+| POST   | /lots                      | species, quantity, lat, lon, vessel | Creazione lotto (FISHER_ROLE)      |
+| POST   | /lots/:tokenId/advance     | tokenId (path), actorEth (opzionale) | Avanzamento stato lotto            |
+| GET    | /lots/:tokenId             | tokenId (path)                    | Dettaglio lotto                    |
+| GET    | /lots/:tokenId/history     | tokenId (path)                    | Cronologia stati lotto (on-chain) |
+
+---
+
 
 ## Funzionamento del Progetto
 

@@ -32,10 +32,10 @@ Content-Type: application/json
 ### Meccanismo
 
 Il flusso di registrazione segue i seguenti passaggi:
--Ricerca utente tramite email nel database
--Verifica della password confrontando l’hash con bcrypt
--Se validi, genera un token JWT con payload contenente id, email, ruolo e indirizzo eth
--Restituisce il token e i dati utente (senza la password)
+ - Ricerca utente tramite email nel database
+ - Verifica della password confrontando l’hash con bcrypt
+ - Se validi, genera un token JWT con payload contenente id, email, ruolo e indirizzo eth
+ - Restituisce il token e i dati utente (senza la password)
 
 ```mermaid
 sequenceDiagram
@@ -264,31 +264,31 @@ Authorization: Bearer <token_jwt>
 
 ### Meccanismo
 
--Il flusso di registrazione segue i seguenti passaggi:
+- Il flusso di registrazione segue i seguenti passaggi:
 
--Middleware auth verifica il token JWT e decodifica i dati utente
+- Middleware auth verifica il token JWT e decodifica i dati utente
 
--Middleware requireRole("FISHER_ROLE") controlla che l'utente abbia il ruolo on-chain
+- Middleware requireRole("FISHER_ROLE") controlla che l'utente abbia il ruolo on-chain
 
--Controller riceve i dati e aggiunge l'indirizzo Ethereum dell'utente (dal token)
+- Controller riceve i dati e aggiunge l'indirizzo Ethereum dell'utente (dal token)
 
--Service:
+- Service:
 
---Verifica la validità dell’indirizzo Ethereum
+-- Verifica la validità dell’indirizzo Ethereum
 
---Controlla il ruolo on-chain FISHER_ROLE
+-- Controlla il ruolo on-chain FISHER_ROLE
 
---Calcola l’area FAO dalla latitudine e longitudine
+-- Calcola l’area FAO dalla latitudine e longitudine
 
---Stima il gas necessario e invia la transazione di minting NFT on-chain
+-- Stima il gas necessario e invia la transazione di minting NFT on-chain
 
---Recupera il tokenId dall’evento della transazione
+-- Recupera il tokenId dall’evento della transazione
 
---Salva il lotto nel database
+-- Salva il lotto nel database
 
---Registra la storia (history) associata
+-- Registra la storia (history) associata
 
--Restituisce dati di transazione, database e tokenId
+- Restituisce dati di transazione, database e tokenId
 
 ```mermaid
 sequenceDiagram
@@ -421,13 +421,13 @@ Authorization: Bearer <token_jwt>
 ### Meccanismo
 -Middleware auth verifica il token JWT e decodifica i dati utente
 
--Controller riceve tokenId e actorEth (da body o JWT)
--Service:
---Verifica la validità dell’indirizzo Ethereum actorEth
---Stima il gas necessario e invia la transazione on-chain advanceState(tokenId) usando l’actorEth come sender
---Recupera lo stato aggiornato on-chain e aggiorna il record nel database
---Aggiunge una voce di storia (history) associata allo stato avanzato
--Restituisce i dati aggiornati e la transazione
+- Controller riceve tokenId e actorEth (da body o JWT)
+- Service:
+-- Verifica la validità dell’indirizzo Ethereum actorEth
+-- Stima il gas necessario e invia la transazione on-chain advanceState(tokenId) usando l’actorEth come sender
+-- Recupera lo stato aggiornato on-chain e aggiorna il record nel database
+-- Aggiunge una voce di storia (history) associata allo stato avanzato
+- Restituisce i dati aggiornati e la transazione
 
 ```mermaid
 sequenceDiagram

@@ -422,10 +422,10 @@ Authorization: Bearer <token_jwt>
 - Middleware auth verifica il token JWT e decodifica i dati utente
 - Controller riceve tokenId e actorEth (da body o JWT)
 - Service:
- - Verifica la validità dell’indirizzo Ethereum actorEth
- - Stima il gas necessario e invia la transazione on-chain advanceState(tokenId) usando l’actorEth come sender
- - Recupera lo stato aggiornato on-chain e aggiorna il record nel database
- - Aggiunge una voce di storia (history) associata allo stato avanzato
+-- Verifica la validità dell’indirizzo Ethereum actorEth
+-- Stima il gas necessario e invia la transazione on-chain advanceState(tokenId) usando l’actorEth come sender
+-- Recupera lo stato aggiornato on-chain e aggiorna il record nel database
+-- Aggiunge una voce di storia (history) associata allo stato avanzato
 - Restituisce i dati aggiornati e la transazione
 
 ```mermaid
